@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface FrequencyService {
 
-    List<TopTag> fetchFrequency(String id);
+    List<TopTag> fetchFrequency(String id) throws Exception;
 }

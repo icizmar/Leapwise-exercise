@@ -2,8 +2,10 @@ package com.exercise.leapwise.service.impl;
 
 import com.exercise.leapwise.model.Feed;
 import com.exercise.leapwise.model.TopTag;
-import com.exercise.leapwise.repository.DBRepository;
+import com.exercise.leapwise.repository.DbRepository;
 import com.exercise.leapwise.service.FrequencyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +17,22 @@ import java.util.Map;
 @Service
 public class FrequencyServiceImpl implements FrequencyService {
 
-    private DBRepository dbRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrequencyServiceImpl.class);
+    private DbRepository dbRepository;
 
     @Autowired
-    public FrequencyServiceImpl(DBRepository dbRepository) {
+    public FrequencyServiceImpl(DbRepository dbRepository) {
         this.dbRepository = dbRepository;
     }
 
     @Override
-    public List<TopTag> fetchFrequency(String sessionID) {
+    public List<TopTag> fetchFrequency(String sessionID) throws Exception{
 
         List<String> mostFrequentTags = dbRepository.getMostFrequentTags(sessionID);
+        if (mostFrequentTags.size() == 0){
+            LOGGER.info("No such session id in database");
+            return new ArrayList<>();
+        }
 
         HashMap<String, List<Integer>> tagsWithFeedIds = new HashMap<>();
         for (String tag : mostFrequentTags) {

@@ -29,7 +29,7 @@ public class AnalyseServiceImpl implements AnalyseService {
     @Value("#{'${unnecessary.words}'.split(',')}")
     private LinkedList<String> unnecessaryWords;
 
-    @Value("#{'news.websites}'.split(',')}")
+    @Value("#{'${news.websites}'.split(',')}")
     private LinkedList<String> newsWebsites;
 
     @Autowired
@@ -66,7 +66,7 @@ public class AnalyseServiceImpl implements AnalyseService {
 
     private String removeNewsWebsites(String title) {
         for (String newsWebsite : newsWebsites) {
-            title = title.replaceAll("\\b" + newsWebsite +"\\b", "");
+            title = title.replaceAll(newsWebsite, "");
         }
         return title;
     }
